@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <%- include('partials/navbar') %>
+    <div class="wrapper">
+        <aside class="aside-container">
+            <div class="aside-top">
+                <div class="button">
+                    <h2>Board</h2>
+                </div>
+                <div class="button">
+                    <h2>Home</h2>
+                </div>
+
+            </div>
+            <div class="aside-bottom">
+                <!-- <p class="button"> Teams</p> -->
+                <a href="#">create team</a>
+            </div>
+        </aside>
+        <section>
+
+            <% if(boards) {%>
+            <h1>Boards</h1>
+            <div class="board-section">
+                <%boards.forEach(board =>{ %>
+                <div class="indiv-board-container">
+                    <a class="indiv-board" href="/home/board/<%=board.id%>/view"><%= board.title%></a>
+                </div>
+                <% }) %>
+                <% } %>
+            </div>
+            <div>
+                <a href="/home/board/create">Create Board</a>
+            </div>
+        </section>
+        <main class="red">
+
+        </main>
+
+    </div>
+</body>
+
+</html>
