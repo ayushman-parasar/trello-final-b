@@ -14,6 +14,12 @@
         <%board.lists.forEach(item =>{%>
             <div>
                 <%=item.title%>
+                <%item.cardId.forEach(elem =>{%>
+                    <div>
+                        <%= elem.title%>
+                    </div>
+                    
+                    <%})%>
                 <a href ="/home/list/<%=item.id%>/card">Create a card</a>
                 <div>
                     

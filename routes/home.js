@@ -49,16 +49,28 @@ router.post('/board/create',(req, res, next)=>{
 //         res.render("board",{board})
 //     })
 // })
+
+// router.get('/board/:boardId/view',(req, res, next)=>{
+//     Board.findById(req.params.boardId)
+//     .populate("lists cards",["title","createdBy"])
+//     .exec((err,board)=>{
+
+//         // console.log(res.locals.cards)
+//         res.render("board",{board})
+//     })
+// })
 router.get('/board/:boardId/view',(req, res, next)=>{
     Board.findById(req.params.boardId)
-    .populate("lists",["title","createdBy"])
-    .exec((err,board)=>{
-
-        console.log(res.locals.cards)
+    .populate({
+        path:"lists",
+        populate:{
+            path:"cardId"
+        }
+    }).exec((err, board)=>{
+        if(err) return next(err)
         res.render("board",{board})
     })
 })
-
 
 // creating a list
 // getting the list form
@@ -101,7 +113,7 @@ router.get('/list/:listId/card',(req, res, next)=>{
 })
 
 router.post('/list/:listId/card',(req, res, next)=>{
-    res.locals.cards=[]
+    // req.locals.cards=[]
     let userId = req.session.userId
     let listId = req.params.listId
     User.findById(userId,(err, user)=>{
@@ -114,7 +126,9 @@ router.post('/list/:listId/card',(req, res, next)=>{
             req.body.boardId = boardId
             Card.create(req.body,(err,card)=>{
                 if(err) return next(err)
-                res.locals.cards.push(card)
+                list.cardId.push(card._id)
+                list.save()
+                // req.locals.cards.push(card)
                 res.redirect(`/home/board/${boardId}/view`)
             })
 
